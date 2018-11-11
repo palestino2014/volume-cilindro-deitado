@@ -27,39 +27,33 @@ void loop()
    //Le as informacoes do sensor, em cm e pol
   float cmMsec, inMsec;
   long microsec = ultrasonic.timing();
-  float a,b,b1,b2,c,d,h;
+
+  //variaveis da equacao
+  float a,b,c,d;
+  //raio em metros
   double r = 1.375;
-  float l = 6.250;  
-  double alt, aBase, volume;  
-  double f1, f2; 
+  //comprimento em metros
+  float l = 6.250;
+  // altura relativa do fluido, area da base, volume  
+  double alt, aBase, volume; 
+  float v[10];
   
   cmMsec = ultrasonic.convert(microsec, Ultrasonic::CM);
   inMsec = ultrasonic.convert(microsec, Ultrasonic::IN);
 
-  alt = ((r*2)-(cmMsec/100));
+  // altura relativa do fluido e conversao para metros
+  alt = ((r*2)-(cmMsec/100)); 
 
-  b2=0;
+  //termos da equacao que calcula o volume
   a = pow(r,2);
   b = acos (1-(alt/r));
   c = sqrt ((2*alt*r)-(alt*alt)); 
   d = (r-alt);
-  
 
-  f1 = PI/180;
-  f2 = 180/PI;
-
-  double  trigo , teste , teta = ((30*PI)/180);    
-  trigo = sin((r-alt)/alt);
-  teste = (r-alt)/alt;
-  
+  // area da base
   aBase = (a)*(b)-(c*d);
-  volume = (aBase*l);  
-
-  //Serial.print("equacao trigonometrica ");
-  //Serial.println(trigo); 
-  //Serial.print("ardumento da equacao ");
-  //Serial.println(teste);
-  
+  //volume 
+  volume = (aBase*l);    
   
   //Exibe informacoes no serial monitor
   Serial.print("Distancia em cm: ");
@@ -78,17 +72,29 @@ void loop()
   Serial.print("Volume:");
   Serial.println(volume);
   Serial.println("================");
+
+  // laço for para calibrar a leitura do volume - media de 10 medidas
+
+  for (int i=0 ; i<= 10 ; i++){
+    v[i]= volume;
+    delay (500); 
+    }
+
+    float vFinal;
+    vFinal = (v[0]+v[1]+v[2]+v[3]+v[4]+v[5]+v[6]+v[7]+v[8]+v[9])/10;
   
   //Limpa a tela
   lcd.clear();
   //Posiciona o cursor na coluna 3, linha 0;
-  lcd.setCursor(3, 0);
+  lcd.setCursor(0, 0);
   //Envia o texto entre aspas para o LCD
-  lcd.print("NIVEL=");
+  lcd.print("Nivel =");
   lcd.print(alt);
-  lcd.setCursor(3, 1);
-  lcd.print("vol=");
-  lcd.print(volume);
-  delay(2000);   
+  lcd.print(" m ");
+  lcd.setCursor(0, 1);
+  lcd.print("VOL = ");
+  lcd.print(vFinal);
+  lcd.print(" m3 ");
+  delay(1000);   
 
 }
