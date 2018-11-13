@@ -46,8 +46,8 @@ void loop()
 
   //termos da equacao que calcula o volume
   a = pow(r,2);
-  b = acos (1-(alt/r));
-  c = sqrt ((2*alt*r)-(alt*alt)); 
+  b = acos(1-(alt/r));
+  c = sqrt((2*alt*r)-(alt*alt)); 
   d = (r-alt);
 
   // area da base
