@@ -51,7 +51,7 @@ void loop()
   d = (r-alt);
 
   // area da base
-  aBase = (a)*(b)-(c*d);
+  aBase = ((a*b)-(c*d));
   //volume 
   volume = (aBase*l);    
   
